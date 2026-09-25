@@ -1,7 +1,6 @@
 import { kv } from "@vercel/kv";
 import type { Offer, Vertical } from "./types";
 
-// Two top-level keys in KV, each holding a JSON array.
 const OFFERS_KEY = "epp:offers";
 const VERTICALS_KEY = "epp:verticals";
 
@@ -45,7 +44,9 @@ export async function getOffers(): Promise<Offer[]> {
 
 export async function getActiveOffers(): Promise<Offer[]> {
   const offers = await getOffers();
-  return offers.filter((o) => o.status === "active");
+  // DEBUG - Vercel logs me dikhega kitni offers hain
+  console.log("KV DEBUG - Total:", offers.length, "Statuses:", offers.map(o => `${o.title}:${o.status}`));
+  return offers.filter((o) => o.status?.toLowerCase().trim() === "active");
 }
 
 export async function getOfferById(id: string): Promise<Offer | undefined> {
@@ -59,7 +60,12 @@ export async function addOffer(
   const offers = await getOffers();
   const next: Offer[] = [
     ...offers,
-    { ...input, id: genId(), createdAt: new Date().toISOString() },
+    { 
+      ...input, 
+      status: input.status?.toLowerCase().trim() as any || "active",
+      id: genId(), 
+      createdAt: new Date().toISOString() 
+    },
   ];
   await kv.set(OFFERS_KEY, next);
   return next;
@@ -70,7 +76,16 @@ export async function updateOffer(
   patch: Partial<Omit<Offer, "id" | "createdAt">>
 ): Promise<Offer[]> {
   const offers = await getOffers();
-  const next = offers.map((o) => (o.id === id ? { ...o, ...patch } : o));
+  const next = offers.map((o) => {
+    if (o.id === id) {
+      const updated = { ...o, ...patch };
+      if (patch.status) {
+        (updated as any).status = patch.status.toLowerCase().trim();
+      }
+      return updated;
+    }
+    return o;
+  });
   await kv.set(OFFERS_KEY, next);
   return next;
 }
