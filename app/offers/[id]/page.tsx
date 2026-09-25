@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FadeUp } from "@/components/site/motion-wrap";
 import { OfferApplyForm } from "@/components/forms/offer-apply-form";
-import { GeoChips } from "@/components/site/geo-chips";
+import { GeoChips, ListChips } from "@/components/site/geo-chips";
 import { getOfferById } from "@/lib/kv";
 
 export const dynamic = "force-dynamic";
@@ -58,13 +58,19 @@ export default async function OfferDetailPage({
                 <p className="text-xs uppercase tracking-wide text-muted">Schedule</p>
                 <p className="mt-1 font-medium text-foreground">{offer.schedule}</p>
               </div>
+              {offer.breakHours && (
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-muted">Break Hours</p>
+                  <p className="mt-1 font-medium text-foreground">{offer.breakHours}</p>
+                </div>
+              )}
               <div>
                 <p className="text-xs uppercase tracking-wide text-muted">Payment Terms</p>
                 <p className="mt-1 font-medium text-foreground">{offer.paymentTerms || "—"}</p>
               </div>
               <div className="col-span-2">
                 <p className="text-xs uppercase tracking-wide text-muted">Allowed Traffic</p>
-                <p className="mt-1 font-medium text-foreground">{offer.allowedTraffic}</p>
+                <ListChips geo={offer.allowedTraffic} className="mt-2" />
               </div>
             </CardContent>
           </Card>
