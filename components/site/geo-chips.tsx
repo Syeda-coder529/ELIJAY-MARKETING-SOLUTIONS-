@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils";
  * split on commas / slashes / pipes into individual chips. Anything that
  * isn't a simple list (e.g. "Nationwide") just renders as a single chip.
  */
-export function parseGeo(geo: string): string[] {
+export function parseList(geo: string): string[] {
   return (geo ?? "")
     .split(/[,/|]+/)
     .map((g) => g.trim())
     .filter(Boolean);
 }
 
-export function GeoChips({
+export function ListChips({
   geo,
   /** Cap how many chips render before collapsing into "+N". Omit for all. */
   limit,
@@ -22,7 +22,7 @@ export function GeoChips({
   limit?: number;
   className?: string;
 }) {
-  const all = parseGeo(geo);
+  const all = parseList(geo);
   if (all.length === 0) return null;
 
   const shown = typeof limit === "number" ? all.slice(0, limit) : all;
@@ -48,4 +48,9 @@ export function GeoChips({
       )}
     </div>
   );
+}
+
+/** Backwards-compatible alias: geo is just the most common list field. */
+export function GeoChips(props: Parameters<typeof ListChips>[0]) {
+  return <ListChips {...props} />;
 }
