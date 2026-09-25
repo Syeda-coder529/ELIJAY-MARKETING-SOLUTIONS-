@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SchedulePicker } from "@/components/admin/schedule-picker";
 import type { Offer, OfferStatus, Vertical } from "@/lib/types";
 
 type FormState = Omit<Offer, "id" | "createdAt">;
@@ -202,11 +203,15 @@ export function OffersManager() {
               </div>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-3">
-              <div>
-                <Label htmlFor="schedule">Schedule</Label>
-                <Input id="schedule" required placeholder="Mon-Fri 9am-8pm EST" value={form.schedule} onChange={(e) => update("schedule", e.target.value)} />
-              </div>
+            <div className="rounded-xl border border-border bg-surface/40 p-4">
+              <SchedulePicker
+                key={editingId ?? "new"}
+                value={form.schedule}
+                onChange={(next) => update("schedule", next)}
+              />
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <Label htmlFor="paymentTerms">Payment Terms</Label>
                 <Input
