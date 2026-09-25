@@ -10,6 +10,7 @@ export interface Offer {
   schedule: string;
   description: string;
   allowedTraffic: string;
+  breakHours: string;
   paymentTerms: string;
   status: OfferStatus;
   createdAt: string;
