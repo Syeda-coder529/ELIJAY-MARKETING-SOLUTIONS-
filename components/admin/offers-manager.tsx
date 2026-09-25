@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SchedulePicker } from "@/components/admin/schedule-picker";
+import { TrafficPicker } from "@/components/admin/traffic-picker";
 import type { Offer, OfferStatus, Vertical } from "@/lib/types";
 
 type FormState = Omit<Offer, "id" | "createdAt">;
@@ -36,10 +37,10 @@ const EMPTY: FormState = {
   schedule: "",
   description: "",
   allowedTraffic: "",
+  breakHours: "",
   paymentTerms: "",
   status: "active",
 };
-
 
 export function OffersManager() {
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -84,8 +85,12 @@ export function OffersManager() {
   function startEdit(offer: Offer) {
     setEditingId(offer.id);
     const { id, createdAt, ...rest } = offer;
-    // Guard against offers created before the Payment Terms field existed.
-    setForm({ ...rest, paymentTerms: rest.paymentTerms || "" });
+    // Guard against offers created before these fields existed.
+    setForm({
+      ...rest,
+      paymentTerms: rest.paymentTerms || "",
+      breakHours: rest.breakHours || "",
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -211,7 +216,16 @@ export function OffersManager() {
               />
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-3">
+              <div>
+                <Label htmlFor="breakHours">Break Hours</Label>
+                <Input
+                  id="breakHours"
+                  placeholder="e.g. 12PM-01PM EST, or None"
+                  value={form.breakHours}
+                  onChange={(e) => update("breakHours", e.target.value)}
+                />
+              </div>
               <div>
                 <Label htmlFor="paymentTerms">Payment Terms</Label>
                 <Input
@@ -242,8 +256,11 @@ export function OffersManager() {
             </div>
 
             <div>
-              <Label htmlFor="allowedTraffic">Allowed Traffic</Label>
-              <Textarea id="allowedTraffic" required rows={2} placeholder="e.g. Paid search, SEO, social — no incentivized or IVR-only traffic" value={form.allowedTraffic} onChange={(e) => update("allowedTraffic", e.target.value)} />
+              <TrafficPicker
+                key={editingId ?? "new"}
+                value={form.allowedTraffic}
+                onChange={(next) => update("allowedTraffic", next)}
+              />
             </div>
 
             <div className="flex gap-3">
@@ -283,7 +300,8 @@ export function OffersManager() {
                       <Badge variant="accent">{offer.vertical}</Badge>
                     </div>
                     <p className="text-sm text-muted">
-                      {offer.payout} · {offer.geo} · Cap {offer.cap} · {offer.paymentTerms}
+                      {offer.payout} · Cap {offer.cap} · {offer.paymentTerms}
+                      {offer.breakHours ? ` · Break ${offer.breakHours}` : ""}
                     </p>
                   </div>
                   <div className="flex gap-2">
