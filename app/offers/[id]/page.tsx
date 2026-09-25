@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FadeUp } from "@/components/site/motion-wrap";
 import { OfferApplyForm } from "@/components/forms/offer-apply-form";
+import { GeoChips } from "@/components/site/geo-chips";
 import { getOfferById } from "@/lib/kv";
 
 export const dynamic = "force-dynamic";
@@ -47,7 +48,7 @@ export default async function OfferDetailPage({
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wide text-muted">Geo</p>
-                <p className="mt-1 font-medium text-foreground">{offer.geo}</p>
+                <GeoChips geo={offer.geo} className="mt-2" />
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wide text-muted">Cap</p>
