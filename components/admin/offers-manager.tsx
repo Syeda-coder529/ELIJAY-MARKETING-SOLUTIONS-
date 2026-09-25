@@ -35,11 +35,10 @@ const EMPTY: FormState = {
   schedule: "",
   description: "",
   allowedTraffic: "",
-  paymentTerms: "Net-30",
+  paymentTerms: "",
   status: "active",
 };
 
-const PAYMENT_TERMS_OPTIONS = ["Weekly", "Net-7", "Net-15", "Net-30", "Net-45"];
 
 export function OffersManager() {
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -85,7 +84,7 @@ export function OffersManager() {
     setEditingId(offer.id);
     const { id, createdAt, ...rest } = offer;
     // Guard against offers created before the Payment Terms field existed.
-    setForm({ ...rest, paymentTerms: rest.paymentTerms || "Net-30" });
+    setForm({ ...rest, paymentTerms: rest.paymentTerms || "" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -210,21 +209,13 @@ export function OffersManager() {
               </div>
               <div>
                 <Label htmlFor="paymentTerms">Payment Terms</Label>
-                <Select
+                <Input
+                  id="paymentTerms"
+                  required
+                  placeholder="e.g. Net-15, Weekly, 50% upfront"
                   value={form.paymentTerms}
-                  onValueChange={(v) => update("paymentTerms", v)}
-                >
-                  <SelectTrigger id="paymentTerms">
-                    <SelectValue placeholder="Select terms" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PAYMENT_TERMS_OPTIONS.map((term) => (
-                      <SelectItem key={term} value={term}>
-                        {term}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  onChange={(e) => update("paymentTerms", e.target.value)}
+                />
               </div>
               <div>
                 <Label htmlFor="status">Status</Label>
