@@ -45,7 +45,6 @@ function parseSchedule(value: string) {
   };
   if (!value?.trim()) return result;
 
-  // times: two tokens like 09AM / 9:30 PM separated by a dash
   const time = value.match(
     /(\d{1,2}(?::\d{2})?\s*(?:AM|PM))\s*[-–—to]+\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM))/i
   );
@@ -54,15 +53,15 @@ function parseSchedule(value: string) {
     result.end = time[2].replace(/\s+/g, "").toUpperCase();
   }
 
-  // trailing timezone token
   const tz = value.match(/\b([A-Z]{2,4})\s*$/);
   if (tz) result.tz = tz[1];
 
-  // day portion = everything before the first time
   const dayPart = time ? value.slice(0, value.indexOf(time[0])) : value;
   const found: Day[] = [];
   for (const segment of dayPart.split(",")) {
-    const range = segment.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s*[-–—]\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/i);
+    const range = segment.match(
+      /(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s*[-–—]\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/i
+    );
     if (range) {
       const a = DAYS.findIndex((d) => d.toLowerCase() === range[1].toLowerCase());
       const b = DAYS.findIndex((d) => d.toLowerCase() === range[2].toLowerCase());
