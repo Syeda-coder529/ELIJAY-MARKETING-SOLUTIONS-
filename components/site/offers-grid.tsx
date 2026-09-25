@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { GeoChips } from "@/components/site/geo-chips";
 import { cn } from "@/lib/utils";
 import type { Offer, Vertical } from "@/lib/types";
 
@@ -90,8 +91,8 @@ export function OffersGrid({
               }}
               transition={{ duration: 0.45, ease: "easeOut" }}
             >
-              <Card className="h-full transition-transform hover:-translate-y-1 hover:shadow-glow">
-                <CardContent className="p-6">
+              <Card className="flex h-full flex-col transition-transform hover:-translate-y-1 hover:shadow-glow">
+                <CardContent className="flex flex-1 flex-col p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <Badge variant="accent">{offer.vertical}</Badge>
                     <Badge variant="live">
@@ -106,27 +107,40 @@ export function OffersGrid({
                     {offer.description}
                   </p>
 
-                  <div className="mt-5 space-y-2 border-t border-border pt-4 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted">Payout</span>
-                      <span className="font-display font-semibold text-gold">{offer.payout}</span>
+                  {/* Meta rows.
+                      `items-start` + a shrink-proof label + a right-aligned,
+                      min-w-0 value keeps long values (a 17-state geo list)
+                      from colliding with their label. The geo value is clamped
+                      to two lines so one wide-coverage offer can't stretch the
+                      card taller than its neighbours in the grid. */}
+                  <dl className="mt-5 space-y-2.5 border-t border-border pt-4 text-sm">
+                    <div className="flex items-start justify-between gap-4">
+                      <dt className="shrink-0 text-muted">Payout</dt>
+                      <dd className="min-w-0 text-right font-display font-semibold text-gold">
+                        {offer.payout}
+                      </dd>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted">Geo</span>
-                      <span className="text-foreground">{offer.geo}</span>
+                    <div className="pt-1">
+                      <dt className="mb-1.5 text-muted">Geo</dt>
+                      <dd>
+                        <GeoChips geo={offer.geo} limit={8} />
+                      </dd>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted">Cap</span>
-                      <span className="text-foreground">{offer.cap}</span>
+                    <div className="flex items-start justify-between gap-4">
+                      <dt className="shrink-0 text-muted">Cap</dt>
+                      <dd className="min-w-0 text-right text-foreground">{offer.cap}</dd>
                     </div>
                     {offer.paymentTerms && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted">Terms</span>
-                        <span className="text-foreground">{offer.paymentTerms}</span>
+                      <div className="flex items-start justify-between gap-4">
+                        <dt className="shrink-0 text-muted">Terms</dt>
+                        <dd className="min-w-0 text-right text-foreground">
+                          {offer.paymentTerms}
+                        </dd>
                       </div>
                     )}
-                  </div>
+                  </dl>
 
+                  <div className="flex-1" />
                   <Button asChild size="sm" className="mt-5 w-full">
                     <Link href={`/offers/${offer.id}`}>View &amp; Apply</Link>
                   </Button>
