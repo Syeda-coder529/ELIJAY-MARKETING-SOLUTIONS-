@@ -110,9 +110,7 @@ export function OffersGrid({
                   {/* Meta rows.
                       `items-start` + a shrink-proof label + a right-aligned,
                       min-w-0 value keeps long values (a 17-state geo list)
-                      from colliding with their label. The geo value is clamped
-                      to two lines so one wide-coverage offer can't stretch the
-                      card taller than its neighbours in the grid. */}
+                      from colliding with their label. */}
                   <dl className="mt-5 space-y-2.5 border-t border-border pt-4 text-sm">
                     <div className="flex items-start justify-between gap-4">
                       <dt className="shrink-0 text-muted">Payout</dt>
@@ -130,6 +128,14 @@ export function OffersGrid({
                       <dt className="shrink-0 text-muted">Cap</dt>
                       <dd className="min-w-0 text-right text-foreground">{offer.cap}</dd>
                     </div>
+                    {offer.breakHours && (
+                      <div className="flex items-start justify-between gap-4">
+                        <dt className="shrink-0 text-muted">Break</dt>
+                        <dd className="min-w-0 text-right text-foreground">
+                          {offer.breakHours}
+                        </dd>
+                      </div>
+                    )}
                     {offer.paymentTerms && (
                       <div className="flex items-start justify-between gap-4">
                         <dt className="shrink-0 text-muted">Terms</dt>
@@ -139,17 +145,3 @@ export function OffersGrid({
                       </div>
                     )}
                   </dl>
-
-                  <div className="flex-1" />
-                  <Button asChild size="sm" className="mt-5 w-full">
-                    <Link href={`/offers/${offer.id}`}>View &amp; Apply</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-      )}
-    </div>
-  );
-}
