@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StaggerGroup, StaggerItem } from "@/components/site/motion-wrap";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { Offer, Vertical } from "@/lib/types";
 
@@ -71,9 +71,25 @@ export function OffersGrid({
           No live offers in this vertical right now — check back soon.
         </Card>
       ) : (
-        <StaggerGroup className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          key={active ?? "all"}
+          className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06 } },
+          }}
+        >
           {filtered.map((offer) => (
-            <StaggerItem key={offer.id}>
+            <motion.div
+              key={offer.id}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
               <Card className="h-full transition-transform hover:-translate-y-1 hover:shadow-glow">
                 <CardContent className="p-6">
                   <div className="mb-4 flex items-center justify-between">
@@ -116,9 +132,9 @@ export function OffersGrid({
                   </Button>
                 </CardContent>
               </Card>
-            </StaggerItem>
+            </motion.div>
           ))}
-        </StaggerGroup>
+        </motion.div>
       )}
     </div>
   );
