@@ -55,7 +55,7 @@ export default async function HomePage() {
       <VerticalTicker />
 
       {/* HOW A CALL MOVES — animated routing diagram */}
-      <section className="relative border-b border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-b border-border py-16 md:py-24">
         <div className="container">
           <FadeUp className="max-w-xl">
             <Badge className="mb-4">How It Works</Badge>
@@ -123,10 +123,10 @@ export default async function HomePage() {
       </section>
 
       {/* NUMBERS */}
-      <section className="relative border-b border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-b border-border py-16 md:py-24">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/3 h-[240px] w-[130vw] max-w-[560px] -translate-x-1/2 rounded-full bg-emerald-blob opacity-20 blur-[130px]"
+          className="pointer-events-none absolute left-1/2 top-1/3 h-[240px] w-[95vw] max-w-[560px] -translate-x-1/2 rounded-full bg-emerald-blob opacity-20 blur-[130px]"
         />
         <div className="container relative">
           <FadeUp className="mx-auto max-w-xl text-center">
@@ -167,7 +167,7 @@ export default async function HomePage() {
       </section>
 
       {/* LIVE OFFERS PREVIEW */}
-      <section className="relative border-t border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-t border-border py-16 md:py-24">
         <div className="container">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <FadeUp className="max-w-xl">
@@ -240,10 +240,10 @@ export default async function HomePage() {
       </section>
 
       {/* PUBLISHER BENEFITS */}
-      <section className="relative border-t border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-t border-border py-16 md:py-24">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-[-8%] top-1/4 h-[240px] w-[110vw] max-w-[420px] rounded-full bg-emerald-blob opacity-20 blur-[120px]"
+          className="pointer-events-none absolute left-[-8%] top-1/4 h-[240px] w-[85vw] max-w-[420px] rounded-full bg-emerald-blob opacity-20 blur-[120px]"
         />
         <div className="container relative">
           <FadeUp className="max-w-xl">
@@ -289,7 +289,7 @@ export default async function HomePage() {
       </section>
 
       {/* COMPLIANCE */}
-      <section className="relative border-t border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-t border-border py-16 md:py-24">
         <div className="container">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
             <FadeUp>
@@ -328,13 +328,13 @@ export default async function HomePage() {
       </section>
 
       {/* BUYER CTA */}
-      <section className="relative border-t border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-t border-border py-16 md:py-24">
         <div className="container">
           <FadeUp>
             <Card className="relative overflow-hidden border-gold/25 bg-emerald/50 p-6 text-center sm:p-10 md:p-16">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-0 h-[240px] w-[130vw] max-w-[600px] -translate-x-1/2 rounded-full bg-emerald-blob opacity-30 blur-[100px]"
+                className="pointer-events-none absolute left-1/2 top-0 h-[240px] w-[95vw] max-w-[600px] -translate-x-1/2 rounded-full bg-emerald-blob opacity-30 blur-[100px]"
               />
               <div className="relative">
                 <Badge variant="gold" className="mx-auto mb-5">
