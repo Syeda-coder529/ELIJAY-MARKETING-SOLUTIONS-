@@ -25,7 +25,7 @@ export function HeroSection() {
           section bounds so its edge can never clip into a visible band */}
       <div
         aria-hidden="true"
-        className="layer-blob pointer-events-none absolute left-1/2 top-[8%] h-[300px] w-[140vw] max-w-[720px] -translate-x-1/2 animate-drift rounded-full bg-emerald-blob opacity-30 blur-[100px] md:h-[420px]"
+        className="layer-blob pointer-events-none absolute left-1/2 top-[8%] h-[300px] w-[95vw] max-w-[720px] -translate-x-1/2 animate-drift rounded-full bg-emerald-blob opacity-30 blur-[100px] md:h-[420px]"
       />
 
       <div className="container relative z-10 py-16 md:py-32">
