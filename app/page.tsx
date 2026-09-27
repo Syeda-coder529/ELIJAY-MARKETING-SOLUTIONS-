@@ -74,10 +74,14 @@ export default async function HomePage() {
             <Card className="overflow-hidden border-gold/20 bg-emerald/25 p-0">
               {/* The diagram is laid out in fixed pixels, so on a phone it
                   scrolls horizontally at full size instead of collapsing into
-                  overlapping labels. */}
+                  overlapping labels. The hint below tells the reader that —
+                  a cut-off canvas with no affordance just looks broken. */}
               <div className="overflow-x-auto">
                 <CallExchange className="h-[380px] w-full min-w-[620px] md:h-[460px]" />
               </div>
+              <p className="border-t border-border px-5 pt-3 text-xs text-muted md:hidden">
+                Swipe the diagram sideways to follow a call end to end.
+              </p>
               <div className="flex flex-wrap gap-5 border-t border-border px-6 py-4 text-xs text-muted">
                 <span className="inline-flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-teal" />
@@ -96,9 +100,10 @@ export default async function HomePage() {
           </FadeUp>
 
           <FadeUp className="mt-12">
-            <Card className="flex flex-col items-start justify-between gap-6 border-gold/20 bg-emerald/40 p-6 md:flex-row md:items-center">
-              <div className="flex items-center gap-5">
-                <Waveform />
+            <Card className="flex flex-col items-start justify-between gap-5 border-gold/20 bg-emerald/40 p-5 sm:p-6 md:flex-row md:items-center">
+              <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-5">
+                {/* fewer bars on a phone — 28 squeezes the copy off the card */}
+                <Waveform className="w-full sm:w-auto" />
                 <div>
                   <p className="font-display text-sm font-semibold text-foreground">
                     Live line, in progress
