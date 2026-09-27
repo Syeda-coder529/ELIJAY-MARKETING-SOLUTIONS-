@@ -10,9 +10,6 @@ import { cn } from "@/lib/utils";
  * Accessibility: the full string is always present for screen readers via a
  * visually-hidden copy, and reduced-motion users get the finished text
  * immediately with no looping. The text is never withheld, only revealed.
- *
- * A single chained timeout (no interval) drives it, so the phases can have
- * different speeds and nothing queues up if the tab is backgrounded.
  */
 export function Typewriter({
   text,
@@ -76,13 +73,13 @@ export function Typewriter({
   }, [text, speed, eraseSpeed, holdFull, holdEmpty, delay, loop]);
 
   return (
-    <span className={cn("inline-flex items-center", className)}>
+    <span className={cn("inline-block max-w-full", className)}>
       {/* reserves the full width so surrounding layout never reflows */}
       <span className="relative">
         <span className="invisible" aria-hidden="true">
           {text}
         </span>
-        <span className="absolute inset-0 whitespace-nowrap" aria-hidden="true">
+        <span className="absolute inset-0" aria-hidden="true">
           {shown}
           {!done && (
             <span className="ml-0.5 inline-block w-[1px] animate-caret bg-gold align-middle">
