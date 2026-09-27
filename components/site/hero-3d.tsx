@@ -18,10 +18,12 @@ import { useEffect, useRef } from "react";
  * WebGL context to lose.
  */
 
-const NODE_COUNT = 150;
+const NODE_COUNT_DESKTOP = 150;
+const NODE_COUNT_MOBILE = 70;
 const RADIUS = 210;
 const FOCAL = 560;
 const LINK_DISTANCE = 66;
+const MOBILE_BREAKPOINT = 768;
 
 const FAR: [number, number, number] = [0, 59, 50];
 const MID: [number, number, number] = [0, 138, 112];
@@ -73,7 +75,9 @@ export function Hero3D({ className }: { className?: string }) {
     if (!ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const nodes = buildSphere(NODE_COUNT);
+
+    let isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    let nodes = buildSphere(isMobile ? NODE_COUNT_MOBILE : NODE_COUNT_DESKTOP);
 
     let width = 0;
     let height = 0;
@@ -84,7 +88,13 @@ export function Hero3D({ className }: { className?: string }) {
     let angleX = -0.32;
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const wasMobile = isMobile;
+      isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+      // rebuild only when crossing the breakpoint, not on every resize tick
+      if (wasMobile !== isMobile) {
+        nodes = buildSphere(isMobile ? NODE_COUNT_MOBILE : NODE_COUNT_DESKTOP);
+      }
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
       const rect = canvas!.getBoundingClientRect();
       width = rect.width;
       height = rect.height;
@@ -124,13 +134,19 @@ export function Hero3D({ className }: { className?: string }) {
           const depth = (a.depth + b.depth) / 2;
           const alpha = (1 - dist / LINK_DISTANCE) * (0.1 + depth * 0.3);
 
-          const grad = ctx!.createLinearGradient(a.x, a.y, b.x, b.y);
-          const [ar, ag, ab] = brandColor(a.depth);
-          const [br, bg, bb] = brandColor(b.depth);
-          grad.addColorStop(0, `rgba(${ar | 0}, ${ag | 0}, ${ab | 0}, ${alpha})`);
-          grad.addColorStop(1, `rgba(${br | 0}, ${bg | 0}, ${bb | 0}, ${alpha})`);
-
-          ctx!.strokeStyle = grad;
+          if (isMobile) {
+            // one flat colour — building a gradient object per link is the
+            // single most expensive thing in this loop
+            const [mr, mg, mb] = brandColor(depth);
+            ctx!.strokeStyle = `rgba(${mr | 0}, ${mg | 0}, ${mb | 0}, ${alpha})`;
+          } else {
+            const grad = ctx!.createLinearGradient(a.x, a.y, b.x, b.y);
+            const [ar, ag, ab] = brandColor(a.depth);
+            const [br, bg, bb] = brandColor(b.depth);
+            grad.addColorStop(0, `rgba(${ar | 0}, ${ag | 0}, ${ab | 0}, ${alpha})`);
+            grad.addColorStop(1, `rgba(${br | 0}, ${bg | 0}, ${bb | 0}, ${alpha})`);
+            ctx!.strokeStyle = grad;
+          }
           ctx!.lineWidth = 0.6 + depth * 0.5;
           ctx!.beginPath();
           ctx!.moveTo(a.x, a.y);
@@ -167,13 +183,24 @@ export function Hero3D({ className }: { className?: string }) {
         });
     }
 
+    let skip = false;
     function loop() {
       if (!running) return;
-      angleY += 0.0015;
+      rafId = requestAnimationFrame(loop);
+
+      // half frame rate on phones — the rotation is slow enough that this is
+      // invisible, and it halves the work
+      if (isMobile) {
+        skip = !skip;
+        if (skip) return;
+        angleY += 0.003;
+      } else {
+        angleY += 0.0015;
+      }
+
       angleX = -0.32 + Math.sin(frame * 0.0007) * 0.1;
       frame++;
       draw();
-      rafId = requestAnimationFrame(loop);
     }
 
     resize();
