@@ -15,6 +15,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Must be on html as well as body — an oversized child can scroll the
+     document element even when body clips. */
+  overflow-x: hidden;
+  max-width: 100%;
   /* Set on html as well as body. Without it the browser paints its default
      white between navigations, which shows as a flash on a dark site. */
   background-color: var(--elijay-black);
