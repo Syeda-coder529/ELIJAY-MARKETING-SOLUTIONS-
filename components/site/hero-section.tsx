@@ -43,7 +43,7 @@ export function HeroSection() {
           <span className="text-gold-gradient">Zero Wasted Spend.</span>
         </h1>
 
-        <p className="mt-5 font-display text-base tracking-wide text-gold md:text-lg">
+        <p className="mt-5 font-display text-sm tracking-wide text-gold sm:text-base md:text-lg">
           <Typewriter text="Built on partnership, driven by performance." />
         </p>
 
