@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ELIJAY brand tokens */
+:root {
+  --elijay-black: #050607;
+  --elijay-gold: #d6a343;
+  --elijay-emerald: #003b32;
+  --elijay-teal: #008a70;
+  --elijay-warm-white: #f4f1e8;
+  --elijay-charcoal: #141716;
+  --elijay-white: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Set on html as well as body. Without it the browser paints its default
+     white between navigations, which shows as a flash on a dark site. */
+  background-color: var(--elijay-black);
+}
+
+body {
+  /* Decorative blobs and the fixed globe are oversized by design; this stops
+     any of them from creating a horizontal scrollbar on small screens. */
+  overflow-x: hidden;
+  background-color: var(--elijay-black);
+  color: var(--elijay-warm-white);
+  line-height: 1.6;
+}
+
+::selection {
+  background-color: rgba(214, 163, 67, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--elijay-black);
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2422;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--elijay-emerald);
+}
+
+.text-gold-gradient {
+  background-image: linear-gradient(90deg, #c9912e 0%, #d6a343 45%, #f5d27a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 3D depth layers: background < blobs < cards < CTA */
+.layer-bg { z-index: 0; }
+.layer-blob { z-index: 1; }
+.layer-card { z-index: 2; }
+.layer-cta { z-index: 3; }
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(rgba(214, 163, 67, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214, 163, 67, 0.045) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 35%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
